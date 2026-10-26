@@ -1,7 +1,7 @@
 <title>Duru's Town</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lilita+One&family=Titan+One&family=Nunito:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lilita+One&family=Titan+One&family=Nunito:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=Calistoga&display=swap">
 <style>
 /* Layout: a game stage (real Fantage scenes) on top, a plain "quick read" resume below for recruiters in a hurry.
    Single bright theme on purpose: it's a Fantage-style world. */
@@ -264,54 +264,88 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
 .mailform .status.ok { color: #1f7a1f; } .mailform .status.err { color: #c0262d; }
 .mailform .status a { color: #135a8b; }
 
-/* resume: a clean one-page layout under the game */
-.plain { background: var(--cream); border: 6px solid var(--orange); outline: 3px solid var(--orange-dark); border-radius: 24px; box-shadow: 0 6px 0 var(--orange-dark); padding: clamp(18px, 4vw, 36px); display: grid; gap: 26px; }
-.cv-head { display: grid; gap: 6px; padding-bottom: 18px; border-bottom: 3px dashed #f3b8c1; }
-.cv-head h2 { margin: 0; font: 400 clamp(1.9rem, 5vw, 2.6rem)/1.05 "Titan One", var(--font-chunky); color: var(--red); }
-.cv-head .role { margin: 0; font: 700 1.1rem/1.3 var(--font-display); color: #6b3a8a; }
-.cv-head .summary { margin: 4px 0 0; max-width: 70ch; }
-.cv-head .links { margin-top: 6px; }
-.cv-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 28px 36px; }
-@media (max-width: 760px) { .cv-grid { grid-template-columns: minmax(0, 1fr); } }
-.cv-col { display: grid; gap: 26px; align-content: start; }
-.cv-sec { display: grid; gap: 14px; }
-.cv-sec > h3 { margin: 0; display: flex; align-items: center; gap: 10px; font: 400 1.35rem/1 "Titan One", var(--font-chunky); color: var(--red); }
-.cv-sec > h3::after { content: ""; flex: 1; height: 3px; border-radius: 3px; background: #f3b8c1; }
-.cv-entry { display: grid; gap: 3px; padding-left: 14px; border-left: 3px solid #8ecfff; }
-.cv-entry .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: baseline; }
-.cv-entry h4 { margin: 0; font: 700 1.08rem/1.25 var(--font-display); color: var(--ink); }
-.cv-entry .org { color: #135a8b; }
-.cv-entry .when { font-size: .88rem; font-weight: 700; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.cv-entry .sub { font-size: .9rem; font-weight: 600; color: var(--ink-soft); }
-.cv-entry ul { margin: 4px 0 0; padding-left: 18px; }
-.cv-entry li { margin: 3px 0; }
-.cv-entry p { margin: 2px 0 0; }
-.cv-entry .links { margin-top: 6px; }
-.cv-skill { display: grid; gap: 6px; }
-.cv-skill h4 { margin: 0; font: 700 .95rem/1.2 var(--font-display); color: var(--ink-soft); }
-/* resume: neutral, professional palette inside the orange frame */
-.plain { --ink: #1f2933; --ink-soft: #5f6b7a; background: #fffdf9; color: var(--ink); }
-.plain { --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --font-display: var(--font-body); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
-.plain .cv-head h2 { font: 800 clamp(1.8rem, 4.5vw, 2.4rem)/1.1 var(--font-body); letter-spacing: -.02em; }
-.plain .cv-head .role { font: 500 1rem/1.4 var(--font-body); }
-.plain .cv-sec > h3 { font: 700 .85rem/1 var(--font-body); text-transform: uppercase; letter-spacing: .12em; }
-.plain .cv-entry h4 { font: 600 1rem/1.35 var(--font-body); }
-.plain .cv-entry .org { font-weight: 500; }
-.plain .cv-entry .when, .plain .cv-entry .sub { font-weight: 500; font-size: .85rem; }
-.plain .cv-skill h4 { font: 600 .82rem/1.2 var(--font-body); }
-.plain .chips li { font-weight: 500; font-size: .82rem; }
-.plain .links a, .plain .copy { font: 500 .88rem/1 var(--font-body); }
-.cv-head { border-bottom: 2px solid #ece3d6; }
-.cv-head .role { color: var(--ink-soft); }
-.cv-sec > h3 { color: var(--ink); }
-.cv-head h2 { color: var(--ink); }
-.cv-sec > h3::after { height: 2px; background: #ece3d6; }
-.cv-entry { border-left: 2px solid #e2d6c6; }
-.cv-entry .org { color: var(--ink-soft); font-weight: 600; }
-.plain .chips li { background: #f6f3ee; border: 1px solid #e2d9cc; color: var(--ink); font-weight: 600; }
-.plain .links a, .plain .copy { background: #fff; border: 1.5px solid #cfc4b5; border-radius: 8px; box-shadow: none; color: var(--ink); font: 600 .92rem/1 var(--font-body); padding: 9px 14px; text-shadow: none; }
-.plain .links a::before, .plain .links a::after, .plain .copy::before, .plain .copy::after { content: none; }
-.plain .links a:hover, .plain .copy:hover { filter: none; border-color: var(--ink); color: var(--ink); }
+/* resume: same look as durubirinci.vercel.app (design based on tedawf.com), inside the orange frame */
+.plain {
+  --g950: #030712; --g700: #374151; --g600: #4b5563; --g500: #6b7280; --g400: #9ca3af; --g300: #d1d5db; --g200: #e5e7eb; --g100: #f3f4f6;
+  background: #fff; color: var(--g950); border: 6px solid var(--orange); outline: 3px solid var(--orange-dark); border-radius: 24px;
+  box-shadow: 0 6px 0 var(--orange-dark); overflow: hidden;
+  font: 400 16px/1.5 "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.plain .in { max-width: 768px; margin: 0 auto; padding: 40px clamp(20px, 5vw, 40px); }
+.plain .rule { position: relative; }
+.plain .rule::before { content: ""; position: absolute; top: 0; left: -100vw; right: -100vw; border-top: 1px solid var(--g200); }  /* full-width divider, clipped by the frame */
+.plain .display { font-family: "Calistoga", Georgia, serif; font-weight: 400; margin: 0; letter-spacing: -.01em; }
+.plain h2.display { font-size: clamp(1.5rem, 3.5vw, 1.875rem); line-height: 1.2; }
+.plain a { color: inherit; }
+.plain .muted { color: var(--g600); }
+.plain .tag { display: inline-block; border-radius: 6px; background: var(--g100); padding: 2px 8px; font-size: 12px; font-weight: 500; color: var(--g700); }
+.plain .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+
+.cv-hero { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+.cv-hero .intro { max-width: 28rem; }
+.cv-hero h2 { font-size: clamp(1.875rem, 4.5vw, 2.25rem); line-height: 1.15; }
+.cv-hero p { margin: 16px 0 0; line-height: 1.65; color: var(--g600); }
+.cv-hero .sayhi { display: inline-block; margin-top: 12px; font-size: 14px; color: var(--g500); text-decoration: none; }
+.cv-hero .sayhi:hover { color: var(--g950); }
+.cv-hero .facts { margin-top: 16px; display: grid; gap: 4px; font-size: 14px; color: var(--g500); }
+.cv-icons { margin-top: 24px; display: flex; gap: 8px; }
+.cv-icons a { display: flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px solid var(--g200); border-radius: 6px; color: var(--g500); transition: color .15s, border-color .15s; }
+.cv-icons a:hover { color: var(--g950); border-color: var(--g300); }
+.cv-icons svg { width: 16px; height: 16px; }
+.photos { position: relative; width: 192px; height: 224px; flex: none; margin-right: 8px; cursor: pointer; border: 0; padding: 0; background: none; }
+.photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 6px solid #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 8px 20px rgba(0,0,0,.12); transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
+.photos img[data-pos="0"] { transform: translate(8px, 10px) rotate(-6deg); z-index: 1; }
+.photos img[data-pos="1"] { transform: translate(-8px, 5px) rotate(6deg); z-index: 2; }
+.photos img[data-pos="2"] { transform: rotate(-2deg); z-index: 3; }
+@media (max-width: 760px) { .cv-hero { flex-direction: column; align-items: stretch; } .cv-hero .photos { align-self: center; } .photos { width: 160px; height: 192px; margin: 0; } }
+
+.cv-skills .in { padding-block: 20px; }
+.cv-skills { border-block: 1px solid var(--g200); }
+
+.cv-card { border: 1px solid var(--g200); border-radius: 8px; padding: 16px; transition: border-color .15s; }
+.cv-card:hover { border-color: var(--g300); }
+.cv-card + .cv-card { margin-top: 12px; }
+.cv-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.cv-card h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.cv-card .kind { font-size: 12px; color: var(--g400); }
+.cv-card p { margin: 6px 0 0; font-size: 14px; line-height: 1.65; color: var(--g600); }
+.cv-card .cv-row.bottom { margin-top: 12px; align-items: center; }
+.cv-src { font-size: 14px; font-weight: 500; color: var(--g500) !important; text-decoration: none; text-underline-offset: 4px; }
+.cv-src:hover { color: var(--g950) !important; text-decoration: underline; }
+
+.cv-tabs { display: inline-flex; background: var(--g100); border-radius: 8px; padding: 4px; margin-bottom: 24px; }
+.cv-tabs button { border: 0; background: none; font: 500 14px/1.5 inherit; font-family: inherit; color: var(--g500); padding: 4px 12px; border-radius: 6px; cursor: pointer; }
+.cv-tabs button[aria-selected="true"] { background: #fff; color: var(--g950); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.cv-timeline { margin: 0 0 0 24px; padding: 0 0 0 32px; border-left: 1px solid var(--g200); list-style: none; }
+.cv-timeline[hidden] { display: none; }
+.cv-timeline > li { position: relative; padding: 16px 0; }
+.cv-timeline > li:first-child { padding-top: 0; }
+.cv-timeline > li:last-child { padding-bottom: 0; }
+.cv-logo { position: absolute; left: -56px; top: 0; width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 1px solid var(--g200); background: #fff; display: flex; align-items: center; justify-content: center; }
+.cv-logo img { width: 100%; height: 100%; object-fit: cover; }
+.cv-timeline h3 { margin: 0; font-size: 14px; font-weight: 600; line-height: 1; }
+.cv-timeline h3 span { margin-left: 8px; font-size: 12px; font-weight: 400; color: var(--g400); }
+.cv-timeline .cv-row { margin-top: 6px; }
+.cv-timeline .role { margin: 0; font-size: 14px; font-weight: 500; color: var(--g500); }
+.cv-timeline time { font-size: 12px; color: var(--g400); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cv-timeline ul { margin: 6px 0 0 16px; padding: 0; list-style: disc outside; display: grid; gap: 4px; font-size: 14px; line-height: 1.65; color: var(--g600); }
+
+.cv-about { margin-top: 16px; display: grid; gap: 12px; font-size: 14px; line-height: 1.65; color: var(--g600); }
+.cv-about p { margin: 0; }
+.cv-learning { margin-top: 20px; border: 1px solid var(--g200); border-radius: 8px; padding: 16px; }
+.cv-learning .label { margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--g400); }
+.cv-learning .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 14px; color: var(--g600); }
+
+.cv-contact > p { margin: 12px 0 0; max-width: 28rem; font-size: 14px; color: var(--g600); }
+.cv-links { margin-top: 20px; display: grid; gap: 8px; }
+.cv-links a, .cv-links button { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--g200); border-radius: 8px; padding: 12px 16px; font: inherit; font-size: 14px; background: #fff; color: var(--g950); text-decoration: none; cursor: pointer; text-align: left; transition: border-color .15s; }
+.cv-links a:hover, .cv-links button:hover { border-color: var(--g300); }
+.cv-links span:first-child { color: var(--g500); }
+.cv-links span:last-child { font-weight: 500; overflow-wrap: anywhere; text-align: right; }
+.cv-foot { border-top: 1px solid var(--g200); }
+.cv-foot .in { padding-block: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--g400); }
+.cv-foot a { text-decoration: underline; text-underline-offset: 2px; }
+.cv-foot a:hover { color: var(--g600); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 footer { color: #5b4a80; font-size: .85rem; text-align: center; }
 
@@ -366,57 +400,113 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
   <p class="hint">Click a building to walk there. Home is my room, Mail is how to reach me, and the map takes you anywhere.</p>
 
   <section class="plain" id="plain" aria-labelledby="plain-title">
-    <header class="cv-head">
-      <h2 id="plain-title">Duru Birinci</h2>
-      <p class="role">Software Engineer · B.S. Computer Science, NJIT (expected 2027)</p>
-      <p class="summary">Computer science student at the New Jersey Institute of Technology specializing in AI and machine learning, with internship experience building data tools and internal software in the fintech and energy sectors. Most recently a Software Engineer Intern at Fiserv. Seeking new graduate roles in software engineering, data and AI.</p>
-      <div class="links"><a href="mailto:db662@njit.edu">db662@njit.edu</a><a href="https://github.com/durubirinci" target="_blank" rel="noopener">GitHub</a><a href="https://linkedin.com/in/duru-birinci" target="_blank" rel="noopener">LinkedIn</a></div>
-    </header>
-    <div class="cv-grid">
-      <div class="cv-col">
-        <section class="cv-sec"><h3>Experience</h3>
-          <div class="cv-entry"><div class="top"><h4>Software Engineer Intern · <span class="org">Fiserv</span></h4><span class="when">May – Aug 2026</span></div><ul>
-            <li>Developed a Python log analysis tool for banking workstations, backed by a SQLite analysis layer for structured querying.</li>
-            <li>Built a C#/.NET desktop launcher that provides a single entry point to the tool.</li>
-            <li>Integrated an OpenAI-powered chatbot that lets users query log data in natural language.</li>
-            <li>Implemented a PII tokenization pipeline to safeguard sensitive data.</li></ul></div>
-          <div class="cv-entry"><div class="top"><h4>Information Services & Technology Desk Attendant · <span class="org">NJIT</span></h4><span class="when">Sep 2025 – present</span></div><ul>
-            <li>Supervise and coordinate a team of eight student workers at the university IT service desk.</li>
-            <li>Resolve 70+ support tickets per week through ServiceNow.</li>
-            <li>Administer identity and access management with SailPoint and Duo multi-factor authentication.</li>
-            <li>Author and maintain knowledge base articles for common support issues.</li></ul></div>
-          <div class="cv-entry"><div class="top"><h4>Nuclear Information Technology Intern · <span class="org">PSEG</span></h4><span class="when">May – Aug 2025</span></div><ul>
-            <li>Developed a SQL-backed asset reporting system for nuclear IT operations.</li>
-            <li>Digitized operating procedures into SharePoint, replacing paper-based workflows.</li>
-            <li>Deployed plant kiosks and delivered a 3D scanning solution for equipment inspections.</li>
-            <li>Established a ServiceNow-powered support desk.</li></ul></div>
-        </section>
-        <section class="cv-sec"><h3>Projects</h3>
-          <div class="cv-entry"><div class="top"><h4>Nuclear vs Renewable Energy Dashboard</h4><span class="when">2025</span></div>
-            <div class="sub">Python · Streamlit · Plotly · Pandas</div>
-            <p>Interactive dashboard comparing nuclear and renewable energy trends across 314 countries, built on 23,000+ records spanning 1990 to 2025.</p></div>
-          <div class="cv-entry"><div class="top"><h4>Credit Card Fraud Detection</h4><span class="when">2024</span></div>
-            <div class="sub">Python · scikit-learn · Pandas · Matplotlib</div>
-            <p>Machine learning pipeline for detecting fraudulent transactions across 284,807 records. The Random Forest model achieved 96.3% ROC-AUC and 81.6% recall at 94% precision.</p></div>
-        </section>
+    <div class="in cv-hero">
+      <div class="intro">
+        <h2 class="display" id="plain-title">hi, i'm duru ✿</h2>
+        <p>i'm a senior at njit studying computer science. i build data tools and ml systems, mostly in the energy and fintech space.</p>
+        <a class="sayhi" href="#cv-contact">say hi below ↓</a>
+        <div class="facts"><div>→ cs @ njit, class of '27</div><div>→ software engineer intern @ fiserv, summer '26</div></div>
+        <div class="cv-icons">
+          <a href="https://github.com/durubirinci" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/></svg></a>
+          <a href="https://www.linkedin.com/in/duru-birinci/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a>
+          <a href="mailto:db662@njit.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+        </div>
       </div>
-      <div class="cv-col">
-        <section class="cv-sec"><h3>Education</h3>
-          <div class="cv-entry"><div class="top"><h4>New Jersey Institute of Technology</h4></div>
-            <div class="sub">B.S. Computer Science, AI/ML specialization · Expected 2027</div>
-            <p>Focus areas: operating systems, computer networking, machine learning engineering and system design.</p></div>
-        </section>
-        <section class="cv-sec"><h3>Skills</h3>
-          <div class="cv-skill"><h4>Languages</h4><ul class="chips"><li>Python</li><li>Java</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>C# / .NET</li></ul></div>
-          <div class="cv-skill"><h4>Frameworks & tools</h4><ul class="chips"><li>React</li><li>React Native</li><li>Next.js</li><li>Tailwind CSS</li><li>HTML/CSS</li><li>Node.js</li><li>FastAPI</li><li>REST APIs</li></ul></div>
-          <div class="cv-skill"><h4>Data</h4><ul class="chips"><li>SQLite</li><li>PostgreSQL</li><li>Redis</li></ul></div>
-        </section>
-        <section class="cv-sec"><h3>Contact</h3>
-          <p style="margin:0">Open to new graduate opportunities in software engineering, data and AI.</p>
-          <div class="links"><button class="copy" type="button" data-open="contact">Get in touch</button></div>
-        </section>
+      <button class="photos" type="button" id="photos" aria-label="Show the next photo">
+        <img src="assets/photo-pseg.webp" alt="Duru volunteering with PSEG" data-pos="0" loading="lazy">
+        <img src="assets/photo-fiserv.webp" alt="Duru at her Fiserv internship" data-pos="1" loading="lazy">
+        <img src="assets/photo-headshot.webp" alt="Duru Birinci" data-pos="2" loading="lazy">
+      </button>
+    </div>
+
+    <div class="cv-skills"><div class="in"><ul class="tags">
+      <li class="tag">Python</li><li class="tag">Java</li><li class="tag">TypeScript</li><li class="tag">JavaScript</li><li class="tag">SQL</li><li class="tag">C#</li><li class="tag">.NET</li><li class="tag">React.js</li><li class="tag">React Native</li><li class="tag">Next.js</li><li class="tag">Tailwind CSS</li><li class="tag">HTML</li><li class="tag">CSS</li><li class="tag">Node.js</li><li class="tag">FastAPI</li><li class="tag">REST APIs</li><li class="tag">SQLite</li><li class="tag">PostgreSQL</li><li class="tag">Redis</li>
+    </ul></div></div>
+
+    <div class="in">
+      <h2 class="display" style="margin-bottom:24px">featured projects</h2>
+      <article class="cv-card">
+        <div class="cv-row"><h3>Nuclear vs Renewable Energy Dashboard</h3><span class="kind">Data Viz · 2025</span></div>
+        <p>Interactive data viz platform for global energy trends across 314 countries, built on 23,000+ rows of real-world data (1990–2025).</p>
+        <div class="cv-row bottom"><ul class="tags"><li class="tag">Python</li><li class="tag">Streamlit</li><li class="tag">Plotly</li><li class="tag">Pandas</li></ul><a class="cv-src" href="https://github.com/durubirinci/energy_analytics_dashboard" target="_blank" rel="noopener">Source ↗</a></div>
+      </article>
+      <article class="cv-card">
+        <div class="cv-row"><h3>Credit Card Fraud Detection</h3><span class="kind">Machine Learning · 2024</span></div>
+        <p>ML fraud detection pipeline on 284,807 transactions, hitting 96.3% ROC-AUC with Random Forest and 81.6% recall at 94% precision.</p>
+        <div class="cv-row bottom"><ul class="tags"><li class="tag">Python</li><li class="tag">Scikit-learn</li><li class="tag">Pandas</li><li class="tag">Matplotlib</li></ul><a class="cv-src" href="https://github.com/durubirinci/Credit_Card_Fraud_Detection_ml" target="_blank" rel="noopener">Source ↗</a></div>
+      </article>
+    </div>
+
+    <div class="in rule">
+      <div class="cv-tabs" role="tablist" aria-label="Experience">
+        <button type="button" role="tab" id="tab-work" aria-controls="tl-work" aria-selected="true">Work</button>
+        <button type="button" role="tab" id="tab-edu" aria-controls="tl-edu" aria-selected="false">Education</button>
+      </div>
+      <ul class="cv-timeline" id="tl-work" role="tabpanel" aria-labelledby="tab-work">
+        <li><span class="cv-logo"><img src="assets/logo-fiserv.webp" alt="Fiserv" loading="lazy"></span>
+          <h3>Fiserv<span>· Berkeley Heights, NJ</span></h3>
+          <div class="cv-row"><p class="role">Software Engineer Intern</p><time>May — Aug 2026</time></div>
+          <ul>
+            <li>Built and shipped to production an internal Python log analysis tool for banking workstations, parsing hundreds of files at once, each thousands of lines, and returning results in seconds while cutting triage time for support engineers by over 50%.</li>
+            <li>Designed a SQLite-backed analysis layer that flags failure-inducing errors and generates plain-language causes, recommendations, and next steps.</li>
+            <li>Engineered a C# / .NET desktop launcher that orchestrates startup, environment setup, and dashboard delivery, giving non-technical users one-click access to the full tool.</li>
+            <li>Integrated an OpenAI-powered chatbot for natural-language querying of parsed log data, built to Fiserv's Responsible AI Guidelines.</li>
+            <li>Engineered a two-stage PII pipeline using regex detection and HMAC-SHA256 tokenization, ensuring account data is tokenized before it reaches storage or the language model.</li>
+          </ul></li>
+        <li><span class="cv-logo"><img src="assets/logo-njit.svg" alt="NJIT" loading="lazy"></span>
+          <h3>NJIT<span>· Newark, NJ</span></h3>
+          <div class="cv-row"><p class="role">Information Services and Technology Desk Attendant</p><time>Sep 2025 — Present</time></div>
+          <ul>
+            <li>Lead a team of 8 student workers, training new hires, managing shift coverage, and handling escalated issues.</li>
+            <li>Resolve 70+ tickets weekly in ServiceNow across account access, software, hardware, and network issues for students, faculty, and staff.</li>
+            <li>Protect university accounts by verifying identities and managing access and MFA using SailPoint and Duo.</li>
+            <li>Publish and update knowledge base articles for recurring issues, helping the desk resolve common tickets faster.</li>
+          </ul></li>
+        <li><span class="cv-logo"><img src="assets/logo-pseg.webp" alt="PSEG" loading="lazy"></span>
+          <h3>PSEG<span>· Salem, NJ</span></h3>
+          <div class="cv-row"><p class="role">Nuclear Information Technology Intern</p><time>May — Aug 2025</time></div>
+          <ul>
+            <li>Built a SQL-backed reporting system tracking 500+ hardware assets by age, last user, and last known location, giving leadership weekly visibility for replacement planning.</li>
+            <li>Digitized hundreds of hard-copy operating procedures into a Microsoft SharePoint library and deployed kiosks across multiple plant sites, modernizing their current process.</li>
+            <li>Delivered a 3D scanning solution letting supervisors virtually inspect the plant, cutting physical inspection time by 30% while maintaining safety compliance.</li>
+            <li>Established the plant's first ServiceNow-powered support desk, delivering real-time IT support for 200+ employees across departments.</li>
+          </ul></li>
+      </ul>
+      <ul class="cv-timeline" id="tl-edu" role="tabpanel" aria-labelledby="tab-edu" hidden>
+        <li><span class="cv-logo"><img src="assets/logo-njit.svg" alt="NJIT" loading="lazy"></span>
+          <h3>New Jersey Institute of Technology<span>· Newark, NJ</span></h3>
+          <div class="cv-row"><p class="role">B.S. Computer Science</p><time>2023 — 2027 (expected)</time></div>
+          <ul><li>Relevant coursework: Data Structures and Algorithms, Foundations of Computer Science, Programming Language Concepts, Intensive Programming in Linux, Principles of Operating Systems, Cybersecurity, Networking.</li></ul></li>
+        <li><span class="cv-logo"><img src="assets/logo-cctec.webp" alt="Cumberland County Technical Education Center" loading="lazy"></span>
+          <h3>Cumberland County Technical Education Center<span>· Vineland, NJ</span></h3>
+          <div class="cv-row"><p class="role">Technical Certificate, Information Technology</p><time>2019 — 2023</time></div>
+          <ul><li>Four-year technical program focused on IT fundamentals, networking, and foundational programming.</li></ul></li>
+      </ul>
+    </div>
+
+    <div class="in">
+      <h2 class="display">about me</h2>
+      <div class="cv-about">
+        <p>i'm a cs student at njit (class of 2027), pursuing my bachelor's with a specialization in artificial intelligence and machine learning.</p>
+        <p>with academic and industry experience in python, java, c/c++, javascript, sql, and react, i build full-stack applications and data tools that solve real-world problems.</p>
+        <p>last summer, i interned at pseg as a nuclear it intern, where i helped launch new jersey's first nuclear power plant technical support desk. this past summer, i joined fiserv as a software engineering intern.</p>
+        <p>i'm actively exploring new grad roles in software engineering, data, and ai where i can contribute, grow, and bring both technical and analytical skills to the table. i'd love to connect.</p>
+      </div>
+      <div class="cv-learning"><div class="label">currently learning</div><div class="grid"><div>operating systems</div><div>networking</div><div>ml engineering</div><div>system design</div></div></div>
+    </div>
+
+    <div class="in rule cv-contact" id="cv-contact">
+      <h2 class="display">contact me</h2>
+      <p>reach out for new grad roles, internships, collaborations, or just to say hi.</p>
+      <div class="cv-links">
+        <a href="mailto:db662@njit.edu"><span>email</span><span>db662@njit.edu</span></a>
+        <a href="https://github.com/durubirinci" target="_blank" rel="noopener"><span>github</span><span>@durubirinci ↗</span></a>
+        <a href="https://www.linkedin.com/in/duru-birinci/" target="_blank" rel="noopener"><span>linkedin</span><span>in/duru-birinci ↗</span></a>
+        <a href="assets/duru-birinci-resume.pdf" target="_blank" rel="noopener"><span>resume</span><span>download pdf ↗</span></a>
+        <button type="button" data-open="contact"><span>message</span><span>send me mail ↗</span></button>
       </div>
     </div>
+    <div class="cv-foot"><div class="in"><span>© 2026 duru birinci · resume design based on <a href="https://github.com/tedawf/tedawf.com" target="_blank" rel="noopener">tedawf.com</a></span></div></div>
   </section>
 
   <footer>Fan tribute to Fantage. Downtown art by trixie-in-pastel on DeviantArt, other scenes and the toolbar are screenshots from the Fantage Wiki, and the avatar was made on Fantage Archive; Fantage art and names belong to their original owners.</footer>
@@ -509,7 +599,7 @@ const SECTIONS = {
       </form>
       <div class="item"><h3>Or email me directly</h3><div class="links" style="align-items:center"><span class="email">${EMAIL}</span><button class="copy" type="button" data-copy>Copy</button></div></div>
       <div class="links"><a href="https://github.com/durubirinci" target="_blank" rel="noopener">GitHub</a><a href="https://linkedin.com/in/duru-birinci" target="_blank" rel="noopener">LinkedIn</a></div>
-      <p class="todo">Resume download coming soon.</p>`
+      <div class="links"><a href="assets/duru-birinci-resume.pdf" target="_blank" rel="noopener">Download my resume (PDF)</a></div>`
   }
 };
 SECTIONS.work = {
@@ -686,6 +776,19 @@ function warnProfanity() {
   warn.hidden = false;
   warnTimer = setTimeout(() => { warn.hidden = true; }, 2500);
 }
+
+/* resume: Work / Education tabs and the photo stack (click to send the front photo to the back) */
+document.querySelectorAll('.cv-tabs [role="tab"]').forEach(tab => tab.addEventListener("click", () => {
+  document.querySelectorAll('.cv-tabs [role="tab"]').forEach(t => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+}));
+document.getElementById("photos").addEventListener("click", e => {
+  const imgs = [...e.currentTarget.querySelectorAll("img")];
+  imgs.forEach(img => img.dataset.pos = (Number(img.dataset.pos) + 1) % imgs.length);
+});
 
 /* keep the "Skip the game" arrow under the Resume link when the sticker sits below the nav */
 const sticker = document.querySelector(".sticker");
