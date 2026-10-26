@@ -61,6 +61,25 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
 .nav .logo { display: flex; align-items: center; gap: 8px; padding-block: 4px; }
 .nav .logo img { width: clamp(30px, 4vw, 38px); height: clamp(30px, 4vw, 38px); object-fit: cover; object-position: 50% 15%; border-radius: 50%; background: linear-gradient(#b4e1ff, #8ecfff); border: 2px solid #fff; box-shadow: 0 2px 0 var(--orange-dark); }
 .nav .hot { color: var(--red); }
+/* "Skip the game" sticker beside the nav, pointing at Resume */
+.nav-wrap { justify-self: center; max-width: 100%; position: relative; display: grid; }
+.sticker {
+  position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%) rotate(-5deg);
+  display: flex; align-items: center; gap: 2px; text-decoration: none; white-space: nowrap;
+}
+.sticker span {
+  font: 400 clamp(1rem, 1.8vw, 1.2rem)/1 var(--font-chunky); letter-spacing: .02em; color: #3a2a00;
+  background: linear-gradient(#fff27a, #ffd93d); padding: 9px 14px; border-radius: 14px;
+  border: 4px solid #fff; box-shadow: 0 0 0 2px #e8b400, 0 5px 0 #c99a00, 0 10px 16px rgba(120,80,0,.3);
+  transition: transform .15s ease;
+}
+.sticker:hover span, .sticker:focus-visible span { transform: scale(1.07) rotate(2deg); }
+.sticker-arrow { width: 44px; height: 30px; fill: none; stroke: #c4520c; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+/* not enough room beside the nav: sit under it, pointing up */
+@media (max-width: 1200px) {
+  .sticker { position: static; transform: rotate(-4deg); justify-self: end; margin: 10px 0 -6px 0; }
+  .sticker-arrow { transform: rotate(-40deg) scaleX(-1); margin-top: -18px; }
+}
 .hero { text-align: center; display: grid; gap: 2px; }
 /* big bubbly title like "JOIN NOW!" */
 .chunky {
@@ -298,6 +317,7 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
 </style>
 
 <div class="wrap">
+  <div class="nav-wrap">
   <nav class="nav" aria-label="Sections">
     <a class="logo" href="#top" aria-label="Duru, back to top"><img src="{{head}}" alt="">Duru</a>
     <button type="button" class="hot" data-open="contact">Contact</button>
@@ -306,6 +326,8 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
     <button type="button" data-open="school">Skills</button>
     <a href="#plain">Resume</a>
   </nav>
+  <a class="sticker" href="#plain"><svg class="sticker-arrow" viewBox="0 0 60 40" aria-hidden="true"><path d="M56 30 C 40 34, 22 30, 8 14" /><path d="M6 26 L 7 12 L 20 10" /></svg><span>Skip the game</span></a>
+  </div>
   <div class="hero" id="top">
     <h1 class="chunky">Duru <b>Birinci</b></h1>
     <p>Software Engineer · CS @ NJIT '27</p>
