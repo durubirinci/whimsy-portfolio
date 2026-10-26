@@ -1,0 +1,686 @@
+<title>Duru's Town</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lilita+One&family=Titan+One&family=Nunito:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a game stage (real Fantage scenes) on top, a plain "quick read" resume below for recruiters in a hurry.
+   Single bright theme on purpose: it's a Fantage-style world. */
+:root {
+  --ink: #2b2350;
+  --ink-soft: #5b5480;
+  --paper: #fffdf6;
+  --page: #e8f6ff;
+  --orange: #f47a1f;
+  --orange-dark: #c4520c;
+  --orange-light: #ffb054;
+  --cream: #fff4e3;
+  --red: #e0233a; /* the red of the Fantage name-tag title */
+  --font-chunky: "Lilita One", "Baloo 2", system-ui, sans-serif;
+  --accent: #ff7ab8;
+  --accent-ink: #ffffff;
+  --gold: #ffcc33;
+  --line: #d9d2f0;
+  --bar: #1d4f9c;
+  --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+/* page backdrop: pastel rainbow sky like the Fantage homepage */
+html { background: #f6d6ec; }
+body {
+  color: var(--ink); margin: 0; min-height: 100vh;
+  background:
+    radial-gradient(ellipse 60% 38% at 82% 18%, rgba(255,255,255,.75), transparent 70%),
+    radial-gradient(ellipse 45% 30% at 10% 30%, rgba(255,214,240,.9), transparent 70%),
+    radial-gradient(circle at 18% 120%, transparent 52%, rgba(255,120,120,.28) 52.5%, rgba(255,190,90,.28) 55%, rgba(255,240,120,.28) 57.5%, rgba(120,220,140,.28) 60%, rgba(120,180,255,.28) 62.5%, rgba(190,140,255,.28) 65%, transparent 65.5%),
+    linear-gradient(#ffd7c4 0%, #f9c7e3 22%, #dcc6ff 48%, #bfe0ff 72%, #9fd3ff 100%);
+  background-attachment: fixed;
+}
+body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px 48px;
+  display: grid; gap: 20px;
+}
+/* orange pill nav bar */
+.nav {
+  justify-self: center; max-width: 100%; display: flex; align-items: stretch; flex-wrap: wrap; justify-content: center;
+  background: linear-gradient(#fffdf7, #fff1d9); border: 3px solid var(--orange-dark);
+  border-radius: 22px; box-shadow: 0 4px 0 var(--orange-dark), 0 8px 18px rgba(196,82,12,.25); overflow: hidden;
+}
+.nav > * {
+  font: 400 clamp(1rem, 2.2vw, 1.3rem)/1 var(--font-chunky); letter-spacing: .02em; color: var(--red); text-decoration: none;
+  background: none; border: 0; cursor: pointer; padding: 10px clamp(10px, 2vw, 22px); display: flex; align-items: center;
+  text-shadow: 0 2px 0 rgba(224,35,58,.18); border-left: 2px solid #f6c88e;
+}
+.nav > :first-child { border-left: 0; }
+.nav > *:hover { background: #ffe2b8; }
+/* home link: Duru's avatar head in a round frame, like a Fantage buddy icon */
+.nav .logo { display: flex; align-items: center; gap: 8px; padding-block: 4px; }
+.nav .logo img { width: clamp(30px, 4vw, 38px); height: clamp(30px, 4vw, 38px); object-fit: cover; object-position: 50% 15%; border-radius: 50%; background: linear-gradient(#b4e1ff, #8ecfff); border: 2px solid #fff; box-shadow: 0 2px 0 var(--orange-dark); }
+.nav .hot { color: var(--red); }
+.hero { text-align: center; display: grid; gap: 2px; }
+/* big bubbly title like "JOIN NOW!" */
+.chunky {
+  font: 400 clamp(2.2rem, 7.5vw, 4.2rem)/1.05 "Titan One", var(--font-chunky); margin: 0;
+  color: var(--red); -webkit-text-stroke: 6px #fff; paint-order: stroke fill; letter-spacing: .05em;
+  text-shadow: 0 3px 0 #9e1527, 0 5px 0 #6e0d1a, 0 10px 16px rgba(158,21,39,.4), 0 0 26px rgba(255,170,190,.85);
+}
+.chunky b { font-weight: inherit; }
+.hero p { margin: 0; font: 700 clamp(1rem, 2.4vw, 1.2rem)/1.3 var(--font-display); color: #6b3a8a; }
+/* the four colorful calls to action along the bottom */
+.ctas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 14px; }
+.cta {
+  background: none; border: 0; padding: 6px 4px; cursor: pointer; text-align: center; display: grid; justify-items: center;
+  font: 400 clamp(1.3rem, 3.6vw, 2.2rem)/0.95 var(--font-chunky); -webkit-text-stroke: 2px #fff; paint-order: stroke fill;
+  filter: drop-shadow(0 3px 0 rgba(43,35,80,.35)); transition: transform .12s ease;
+}
+.cta small { font-size: .62em; }
+.cta:hover { transform: translateY(-3px) scale(1.04); }
+.cta.blue { color: #2b8ef0; } .cta.blue small { color: #6d4ae0; }
+.cta.gold { color: #f6a400; } .cta.gold small { color: #f0781e; }
+.cta.pink { color: #e04aa8; } .cta.pink small { color: #a64ad8; }
+.cta.green { color: #35b53a; } .cta.green small { color: #12a08a; }
+@media (max-width: 600px) { .ctas { grid-template-columns: repeat(2, 1fr); } }
+.skip:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- game window: scene + Fantage toolbar ---------- */
+.game { border: 6px solid var(--orange); outline: 3px solid var(--orange-dark); border-radius: 24px; overflow: hidden; box-shadow: 0 6px 0 var(--orange-dark), 0 14px 30px rgba(120,60,160,.25); background: var(--bar); }
+.stage {
+  position: relative; width: 100%; aspect-ratio: var(--ratio, 1.75);
+  background: #9fb0ae center / 100% 100% no-repeat;
+  user-select: none; -webkit-user-select: none; cursor: pointer; isolation: isolate;
+  container-type: inline-size;
+}
+.scene { position: absolute; inset: 0; }
+.scene[hidden] { display: none !important; }
+/* a spot is an invisible button laid over a building in the screenshot */
+.spot {
+  position: absolute; background: none; border: 0; padding: 0; cursor: pointer; border-radius: 1.5cqw;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.spot:hover, .spot:focus-visible { backdrop-filter: brightness(1.15) saturate(1.1); -webkit-backdrop-filter: brightness(1.15) saturate(1.1); }
+.sign, .nameplate {
+  /* Fantage's in-game name tag: light blue plate, navy border, rivet dots in the corners */
+  font: 700 clamp(9px, 1.55cqw, 17px)/1.1 Arial, "Helvetica Neue", sans-serif; color: #0c1f3a; white-space: nowrap; text-align: center;
+  --dot: radial-gradient(circle, #135a8b 45%, transparent 55%);
+  background:
+    var(--dot) top 0.25cqw left 0.25cqw / 0.45cqw 0.45cqw no-repeat,
+    var(--dot) top 0.25cqw right 0.25cqw / 0.45cqw 0.45cqw no-repeat,
+    var(--dot) bottom 0.25cqw left 0.25cqw / 0.45cqw 0.45cqw no-repeat,
+    var(--dot) bottom 0.25cqw right 0.25cqw / 0.45cqw 0.45cqw no-repeat,
+    linear-gradient(#b4e1ff, #8ecfff 60%, #84c6f6);
+  border: 0.2cqw solid #135a8b; border-radius: 0.5cqw; padding: 0.3cqw 1.1cqw;
+  box-shadow: inset 0 0 0 0.15cqw rgba(255,255,255,.55), 0 0.25cqw 0 #3188c8;
+}
+.nameplate { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 0.2cqw; font-size: clamp(8px, 1.25cqw, 13px); padding: 0.2cqw 0.9cqw; }
+.sign { margin-bottom: 0.6cqw; position: relative; z-index: 6; transition: transform .12s ease; }
+.spot:hover .sign, .spot:focus-visible .sign { background-color: #fff; filter: brightness(1.12); transform: translateY(-0.3cqw); }
+.nameplate .title { display: block; color: #e0233a; }
+
+/* avatar: a default Fantage avatar on her board */
+.avatar { position: absolute; width: 12%; transform: translate(-50%, 0); pointer-events: none; z-index: 5; }
+.avatar img { width: 100%; display: block; transform-origin: 50% 100%; transition: transform .1s; }
+.avatar.right img { transform: scaleX(-1); }
+.avatar.walking .sprite { animation: bob .36s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-4%); } }
+.bubble {
+  /* Fantage chat bubble: plain white, thin grey outline, small Arial text */
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  width: max-content; max-width: 26cqw; margin-bottom: 0.9cqw;
+  background: #fff; color: #222; border: 0.15cqw solid #8a8f96; border-radius: 1.2cqw;
+  padding: 0.5cqw 1cqw; font: 400 clamp(10px, 1.45cqw, 15px)/1.3 Arial, "Helvetica Neue", sans-serif; text-align: center;
+  box-shadow: 0 0.2cqw 0.6cqw rgba(0,0,0,.18); overflow-wrap: anywhere;
+}
+.bubble::before, .bubble::after { content: ""; position: absolute; top: 100%; left: 50%; border-style: solid; border-color: transparent; }
+.bubble::before { margin-left: -0.75cqw; border-width: 0.75cqw 0.75cqw 0; border-top-color: #8a8f96; }
+.bubble::after { margin-left: -0.6cqw; margin-top: -0.2cqw; border-width: 0.6cqw 0.6cqw 0; border-top-color: #fff; }
+/* near the stage edges the bubble hangs to one side so it stays inside */
+.bubble.l { left: 0; transform: none; } .bubble.l::before, .bubble.l::after { left: 25%; }
+.bubble.r { left: auto; right: 0; transform: none; } .bubble.r::before, .bubble.r::after { left: 75%; }
+.bubble[hidden], .overlay[hidden] { display: none !important; }
+.nameplate {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 0.2cqw; white-space: nowrap;
+  font-weight: 700; font-size: clamp(8px, 1.2cqw, 13px); line-height: 1.2; color: #12305e;
+  background: #cfe9ff; border: 0.2cqw solid #4a7fc4; border-radius: 0.6cqw; padding: 0 0.8cqw;
+}
+.click-ring { position: absolute; width: 3%; aspect-ratio: 2/1; border: 0.35cqw solid #fff; border-radius: 50%; transform: translate(-50%, 50%); pointer-events: none; animation: ring .5s ease-out forwards; }
+@keyframes ring { from { opacity: 1; transform: translate(-50%,50%) scale(.4); } to { opacity: 0; transform: translate(-50%,50%) scale(1.6); } }
+.zone-label { position: absolute; top: 2.5%; right: 2%; font: 400 clamp(11px, 1.9cqw, 20px)/1 var(--font-chunky); letter-spacing: .03em; color: #fff; background: rgba(19,90,139,.82); border: 0.2cqw solid #fff; border-radius: 999px; padding: 0.4cqw 1.2cqw; box-shadow: 0 0.25cqw 0 rgba(19,90,139,.6); pointer-events: none; z-index: 7; }
+
+/* the real Fantage toolbar, with buttons laid over its icons */
+.toolbar { position: relative; aspect-ratio: 798 / 47; background: center / 100% 100% no-repeat; container-type: inline-size; }
+.tb { position: absolute; top: 4%; height: 92%; background: none; border: 0; padding: 0; cursor: pointer; border-radius: 1cqw; }
+.tb:hover { backdrop-filter: brightness(1.2); -webkit-backdrop-filter: brightness(1.2); }
+.chat { position: absolute; left: 36.4%; width: 33.6%; top: 25%; height: 54%; border: 0; border-radius: 0.6cqw; background: rgb(57,62,63); color: #fff; font: 600 clamp(9px, 1.9cqw, 18px)/1 var(--font-body); padding: 0 1cqw; }
+.chat::placeholder { color: #e9eef0; opacity: 1; }
+
+.hint { margin: 0; color: #5b4a80; font-weight: 600; text-align: center; }
+
+/* ---------- panel ---------- */
+.overlay { position: fixed; inset: 0; background: rgba(43,35,80,.45); display: grid; place-items: center; z-index: 1000;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.panel { position: relative; width: min(620px, 100%); max-height: 100%; overflow: auto; background: var(--cream); border: 6px solid var(--red); outline: 3px solid #9e1527; border-radius: 24px; box-shadow: 0 6px 0 #9e1527; padding: 20px 22px 24px; animation: pop .22s ease-out; }
+@keyframes pop { from { transform: scale(.9); opacity: 0; } }
+.panel .banner { display: block; width: calc(100% + 44px); max-width: none; margin: -20px -22px 14px; aspect-ratio: 735 / 205; object-fit: cover; border-bottom: 4px solid #9e1527; }
+.panel .banner[hidden] { display: none; }
+.panel .eyebrow { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; color: var(--accent); }
+.panel h2 { font-family: "Titan One", var(--font-chunky); font-weight: 400; font-size: 2rem; color: var(--red); margin: 0 0 8px; line-height: 1.1; text-wrap: balance; }
+.close {
+  /* same look as the blue Fantage name tags */
+  position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; z-index: 1; cursor: pointer;
+  font: 700 20px/1 Arial, "Helvetica Neue", sans-serif; color: #0c1f3a;
+  --dot: radial-gradient(circle, #135a8b 45%, transparent 55%);
+  background:
+    var(--dot) top 3px left 3px / 4px 4px no-repeat, var(--dot) top 3px right 3px / 4px 4px no-repeat,
+    var(--dot) bottom 3px left 3px / 4px 4px no-repeat, var(--dot) bottom 3px right 3px / 4px 4px no-repeat,
+    linear-gradient(#b4e1ff, #8ecfff 60%, #84c6f6);
+  border: 2px solid #135a8b; border-radius: 8px;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.55), 0 3px 0 #3188c8;
+}
+.close:hover { filter: brightness(1.1); }
+
+/* shared content styles (panel + plain view) */
+.content { display: grid; gap: 14px; }
+.content p { margin: 0; max-width: 65ch; }
+.item { display: grid; gap: 4px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 14px; background: #fff; }
+.item h3 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.2; }
+.item .meta { color: var(--ink-soft); font-size: .9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.item ul { margin: 4px 0 0; padding-left: 20px; }
+.item li { margin: 2px 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.chips li { background: var(--page); border: 2px solid var(--line); border-radius: 999px; padding: 1px 10px; font-size: .88rem; font-weight: 700; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a, .copy, .places button {
+  /* blue Fantage name-tag buttons, same as the building labels and the close button */
+  font: 700 1rem/1.2 Arial, "Helvetica Neue", sans-serif; color: #0c1f3a; text-decoration: none; cursor: pointer;
+  --dot: radial-gradient(circle, #135a8b 45%, transparent 55%);
+  background:
+    var(--dot) top 3px left 3px / 4px 4px no-repeat, var(--dot) top 3px right 3px / 4px 4px no-repeat,
+    var(--dot) bottom 3px left 3px / 4px 4px no-repeat, var(--dot) bottom 3px right 3px / 4px 4px no-repeat,
+    linear-gradient(#b4e1ff, #8ecfff 60%, #84c6f6);
+  border: 2px solid #135a8b; border-radius: 8px; padding: 6px 16px;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.55), 0 3px 0 #3188c8;
+}
+.links a:hover, .copy:hover, .places button:hover { filter: brightness(1.1); }
+.places { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.places button { padding: 8px 14px; }
+.email { font-weight: 700; user-select: all; -webkit-user-select: all; }
+.todo { color: var(--ink-soft); font-style: italic; }
+/* contact form, styled like the Fantage login box */
+.mailform { display: grid; gap: 10px; padding: 14px; background: linear-gradient(#ffd9a8, #ffc27a); border: 3px solid var(--orange-dark); border-radius: 18px; }
+.mailform label { display: grid; gap: 4px; font: 700 .95rem/1.2 var(--font-display); color: #7a3300; }
+.mailform input, .mailform textarea { font: 600 1rem/1.3 var(--font-body); color: var(--ink); background: #fff; border: 2px solid #e8a35c; border-radius: 12px; padding: 8px 12px; width: 100%; box-sizing: border-box; resize: vertical; }
+.mailform input:focus, .mailform textarea:focus { outline: 3px solid #36b54a; outline-offset: 1px; border-color: #36b54a; }
+.mailform .trap { position: absolute; left: -9999px; }
+.mailform button { justify-self: center; min-width: 60%; font: 400 1.5rem/1 var(--font-chunky); letter-spacing: .03em; color: #fff; cursor: pointer;
+  padding: 10px 24px; border: 3px solid #1f7a1f; border-radius: 999px; background: linear-gradient(#8fe36a, #3fb83a 55%, #2f9e2c);
+  text-shadow: 0 2px 0 #1f7a1f; box-shadow: inset 0 3px 0 rgba(255,255,255,.45), 0 4px 0 #1f7a1f; }
+.mailform button:disabled { filter: grayscale(.5); cursor: wait; }
+.mailform .status { margin: 0; text-align: center; font-weight: 700; min-height: 1.3em; }
+.mailform .status.ok { color: #1f7a1f; } .mailform .status.err { color: #c0262d; }
+.mailform .status a { color: #135a8b; }
+
+/* resume: a clean one-page layout under the game */
+.plain { background: var(--cream); border: 6px solid var(--orange); outline: 3px solid var(--orange-dark); border-radius: 24px; box-shadow: 0 6px 0 var(--orange-dark); padding: clamp(18px, 4vw, 36px); display: grid; gap: 26px; }
+.cv-head { display: grid; gap: 6px; padding-bottom: 18px; border-bottom: 3px dashed #f3b8c1; }
+.cv-head h2 { margin: 0; font: 400 clamp(1.9rem, 5vw, 2.6rem)/1.05 "Titan One", var(--font-chunky); color: var(--red); }
+.cv-head .role { margin: 0; font: 700 1.1rem/1.3 var(--font-display); color: #6b3a8a; }
+.cv-head .summary { margin: 4px 0 0; max-width: 70ch; }
+.cv-head .links { margin-top: 6px; }
+.cv-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 28px 36px; }
+@media (max-width: 760px) { .cv-grid { grid-template-columns: minmax(0, 1fr); } }
+.cv-col { display: grid; gap: 26px; align-content: start; }
+.cv-sec { display: grid; gap: 14px; }
+.cv-sec > h3 { margin: 0; display: flex; align-items: center; gap: 10px; font: 400 1.35rem/1 "Titan One", var(--font-chunky); color: var(--red); }
+.cv-sec > h3::after { content: ""; flex: 1; height: 3px; border-radius: 3px; background: #f3b8c1; }
+.cv-entry { display: grid; gap: 3px; padding-left: 14px; border-left: 3px solid #8ecfff; }
+.cv-entry .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: baseline; }
+.cv-entry h4 { margin: 0; font: 700 1.08rem/1.25 var(--font-display); color: var(--ink); }
+.cv-entry .org { color: #135a8b; }
+.cv-entry .when { font-size: .88rem; font-weight: 700; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cv-entry .sub { font-size: .9rem; font-weight: 600; color: var(--ink-soft); }
+.cv-entry ul { margin: 4px 0 0; padding-left: 18px; }
+.cv-entry li { margin: 3px 0; }
+.cv-entry p { margin: 2px 0 0; }
+.cv-entry .links { margin-top: 6px; }
+.cv-skill { display: grid; gap: 6px; }
+.cv-skill h4 { margin: 0; font: 700 .95rem/1.2 var(--font-display); color: var(--ink-soft); }
+/* resume: neutral, professional palette inside the orange frame */
+.plain { --ink: #1f2933; --ink-soft: #5f6b7a; background: #fffdf9; color: var(--ink); }
+.plain { --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --font-display: var(--font-body); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.plain .cv-head h2 { font: 800 clamp(1.8rem, 4.5vw, 2.4rem)/1.1 var(--font-body); letter-spacing: -.02em; }
+.plain .cv-head .role { font: 500 1rem/1.4 var(--font-body); }
+.plain .cv-sec > h3 { font: 700 .85rem/1 var(--font-body); text-transform: uppercase; letter-spacing: .12em; }
+.plain .cv-entry h4 { font: 600 1rem/1.35 var(--font-body); }
+.plain .cv-entry .org { font-weight: 500; }
+.plain .cv-entry .when, .plain .cv-entry .sub { font-weight: 500; font-size: .85rem; }
+.plain .cv-skill h4 { font: 600 .82rem/1.2 var(--font-body); }
+.plain .chips li { font-weight: 500; font-size: .82rem; }
+.plain .links a, .plain .copy { font: 500 .88rem/1 var(--font-body); }
+.cv-head { border-bottom: 2px solid #ece3d6; }
+.cv-head .role { color: var(--ink-soft); }
+.cv-sec > h3 { color: var(--ink); }
+.cv-head h2 { color: var(--ink); }
+.cv-sec > h3::after { height: 2px; background: #ece3d6; }
+.cv-entry { border-left: 2px solid #e2d6c6; }
+.cv-entry .org { color: var(--ink-soft); font-weight: 600; }
+.plain .chips li { background: #f6f3ee; border: 1px solid #e2d9cc; color: var(--ink); font-weight: 600; }
+.plain .links a, .plain .copy { background: #fff; border: 1.5px solid #cfc4b5; border-radius: 8px; box-shadow: none; color: var(--ink); font: 600 .92rem/1 var(--font-body); padding: 9px 14px; text-shadow: none; }
+.plain .links a::before, .plain .links a::after, .plain .copy::before, .plain .copy::after { content: none; }
+.plain .links a:hover, .plain .copy:hover { filter: none; border-color: var(--ink); color: var(--ink); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+footer { color: #5b4a80; font-size: .85rem; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar.walking .sprite, .panel, .click-ring { animation: none; }
+}
+</style>
+
+<div class="wrap">
+  <nav class="nav" aria-label="Sections">
+    <a class="logo" href="#top" aria-label="Duru, back to top"><img src="{{head}}" alt="">Duru</a>
+    <button type="button" class="hot" data-open="contact">Contact</button>
+    <button type="button" data-open="projects">Projects</button>
+    <button type="button" data-open="work">Experience</button>
+    <button type="button" data-open="school">Skills</button>
+    <a href="#plain">Resume</a>
+  </nav>
+  <div class="hero" id="top">
+    <h1 class="chunky">Duru <b>Birinci</b></h1>
+    <p>Software engineer · CS @ NJIT '27</p>
+  </div>
+
+  <div class="game">
+    <div class="stage" id="stage" aria-label="Clickable Fantage town. Each building opens a section of the portfolio.">
+      <div class="zone-label" id="zone-label">Downtown</div>
+      <div class="avatar" id="avatar">
+        <div class="bubble" id="bubble">Hi, I'm Duru! Click a building, or use Home and Mail below.</div>
+        <div class="sprite"><img src="{{avatar}}" alt=""></div>
+        <div class="nameplate"><span class="title">Software Engineer</span>Duru</div>
+      </div>
+    </div>
+    <div class="toolbar" id="toolbar">
+      <button class="tb" type="button" style="left:0.8%;width:6.2%" data-tb="home" title="My Room" aria-label="Home: go to my room"></button>
+      <button class="tb" type="button" style="left:8.2%;width:6.4%" data-tb="map" title="Map" aria-label="Map: travel to another place"></button>
+      <button class="tb" type="button" style="left:15.6%;width:6.2%" data-tb="closet" title="Closet" aria-label="Closet"></button>
+      <input class="chat" id="chat" type="text" maxlength="60" placeholder="Click Here Or Press ENTER To Chat" aria-label="Say something">
+      <button class="tb" type="button" style="left:70.4%;width:6.4%" data-tb="send" title="Send" aria-label="Send chat"></button>
+      <button class="tb" type="button" style="left:78.2%;width:6.2%" data-tb="buddies" title="Buddies" aria-label="Buddies: GitHub and LinkedIn"></button>
+      <button class="tb" type="button" style="left:85.2%;width:6.4%" data-tb="mail" title="Mail" aria-label="Mail: contact me"></button>
+      <button class="tb" type="button" style="left:92.6%;width:6.6%" data-tb="settings" title="Resume" aria-label="Resume: plain text version"></button>
+    </div>
+  </div>
+  <nav class="ctas" aria-label="Shortcuts">
+    <button type="button" class="cta blue" data-goto-scene="room">Visit <small>my room</small></button>
+    <button type="button" class="cta gold" data-open="projects">See <small>my projects</small></button>
+    <button type="button" class="cta pink" data-goto-scene="uptown">Explore <small>my work</small></button>
+    <button type="button" class="cta green" data-open="contact">Send <small>me mail</small></button>
+  </nav>
+  <p class="hint">Click a building to walk there. Home is my room, Mail is how to reach me, and the map takes you anywhere.</p>
+
+  <section class="plain" id="plain" aria-labelledby="plain-title">
+    <header class="cv-head">
+      <h2 id="plain-title">Duru Birinci</h2>
+      <p class="role">Software Engineer · B.S. Computer Science, NJIT (expected 2027)</p>
+      <p class="summary">Computer science student at the New Jersey Institute of Technology specializing in AI and machine learning, with internship experience building data tools and internal software in the fintech and energy sectors. Most recently a Software Engineer Intern at Fiserv. Seeking new graduate roles in software engineering, data and AI.</p>
+      <div class="links"><a href="mailto:db662@njit.edu">db662@njit.edu</a><a href="https://github.com/durubirinci" target="_blank" rel="noopener">GitHub</a><a href="https://linkedin.com/in/duru-birinci" target="_blank" rel="noopener">LinkedIn</a></div>
+    </header>
+    <div class="cv-grid">
+      <div class="cv-col">
+        <section class="cv-sec"><h3>Experience</h3>
+          <div class="cv-entry"><div class="top"><h4>Software Engineer Intern · <span class="org">Fiserv</span></h4><span class="when">May – Aug 2026</span></div><ul>
+            <li>Developed a Python log analysis tool for banking workstations, backed by a SQLite analysis layer for structured querying.</li>
+            <li>Built a C#/.NET desktop launcher that provides a single entry point to the tool.</li>
+            <li>Integrated an OpenAI-powered chatbot that lets users query log data in natural language.</li>
+            <li>Implemented a PII tokenization pipeline to safeguard sensitive data.</li></ul></div>
+          <div class="cv-entry"><div class="top"><h4>Information Services & Technology Desk Attendant · <span class="org">NJIT</span></h4><span class="when">Sep 2025 – present</span></div><ul>
+            <li>Supervise and coordinate a team of eight student workers at the university IT service desk.</li>
+            <li>Resolve 70+ support tickets per week through ServiceNow.</li>
+            <li>Administer identity and access management with SailPoint and Duo multi-factor authentication.</li>
+            <li>Author and maintain knowledge base articles for common support issues.</li></ul></div>
+          <div class="cv-entry"><div class="top"><h4>Nuclear Information Technology Intern · <span class="org">PSEG</span></h4><span class="when">May – Aug 2025</span></div><ul>
+            <li>Developed a SQL-backed asset reporting system for nuclear IT operations.</li>
+            <li>Digitized operating procedures into SharePoint, replacing paper-based workflows.</li>
+            <li>Deployed plant kiosks and delivered a 3D scanning solution for equipment inspections.</li>
+            <li>Established a ServiceNow-powered support desk.</li></ul></div>
+        </section>
+        <section class="cv-sec"><h3>Projects</h3>
+          <div class="cv-entry"><div class="top"><h4>Nuclear vs Renewable Energy Dashboard</h4><span class="when">2025</span></div>
+            <div class="sub">Python · Streamlit · Plotly · Pandas</div>
+            <p>Interactive dashboard comparing nuclear and renewable energy trends across 314 countries, built on 23,000+ records spanning 1990 to 2025.</p></div>
+          <div class="cv-entry"><div class="top"><h4>Credit Card Fraud Detection</h4><span class="when">2024</span></div>
+            <div class="sub">Python · scikit-learn · Pandas · Matplotlib</div>
+            <p>Machine learning pipeline for detecting fraudulent transactions across 284,807 records. The Random Forest model achieved 96.3% ROC-AUC and 81.6% recall at 94% precision.</p></div>
+        </section>
+      </div>
+      <div class="cv-col">
+        <section class="cv-sec"><h3>Education</h3>
+          <div class="cv-entry"><div class="top"><h4>New Jersey Institute of Technology</h4></div>
+            <div class="sub">B.S. Computer Science, AI/ML specialization · Expected 2027</div>
+            <p>Focus areas: operating systems, computer networking, machine learning engineering and system design.</p></div>
+        </section>
+        <section class="cv-sec"><h3>Skills</h3>
+          <div class="cv-skill"><h4>Languages</h4><ul class="chips"><li>Python</li><li>Java</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>C# / .NET</li></ul></div>
+          <div class="cv-skill"><h4>Frameworks & tools</h4><ul class="chips"><li>React</li><li>React Native</li><li>Next.js</li><li>Tailwind CSS</li><li>HTML/CSS</li><li>Node.js</li><li>FastAPI</li><li>REST APIs</li></ul></div>
+          <div class="cv-skill"><h4>Data</h4><ul class="chips"><li>SQLite</li><li>PostgreSQL</li><li>Redis</li></ul></div>
+        </section>
+        <section class="cv-sec"><h3>Contact</h3>
+          <p style="margin:0">Open to new graduate opportunities in software engineering, data and AI.</p>
+          <div class="links"><button class="copy" type="button" data-open="contact">Get in touch</button></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <footer>Fan tribute to Fantage. Downtown art by trixie-in-pastel on DeviantArt, other scenes and the toolbar are screenshots from the Fantage Wiki, and the avatar was made on Fantage Archive; Fantage art and names belong to their original owners.</footer>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+    <button class="close" id="close" aria-label="Close">✕</button>
+    <img class="banner" id="panel-banner" alt="" hidden>
+    <h2 id="panel-title"></h2>
+    <div class="content" id="panel-body"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- portfolio content ---------- */
+const EMAIL = "db662@njit.edu";
+/* Free form-to-email relay (web3forms.com). Paste the access key they email you here;
+   until then the form falls back to opening the visitor's email app. */
+const WEB3FORMS_KEY = "b33102a8-9888-4846-aa5c-131075eae2b9";
+const IMG = {
+  downtown: "{{downtown}}", uptown: "{{uptown}}", school: "{{school}}", room: "{{room}}",
+  mission: "{{mission}}", toolbar: "{{toolbar}}"
+};
+const SECTIONS = {
+  intro: {
+    place: "Downtown", title: "Hi, I'm Duru",
+    html: `<p>I'm a senior CS student at NJIT (class of '27) who builds data tools and ML systems, mostly in energy and fintech. I interned as a software engineer at Fiserv in summer 2026, and I'm looking for new grad roles in software, data and AI.</p>
+           <p>Walk through the arch to Fantage School for skills, head to Uptown for work experience and the Mission Center for projects. The Home button takes you to my room, and Mail is how to reach me.</p>`
+  },
+  projects: {
+    place: "Uptown · Mission Center", title: "Projects", banner: "mission",
+    html: `
+      <div class="item"><h3>Nuclear vs Renewable Energy Dashboard</h3><div class="meta">2025 · Python, Streamlit, Plotly, Pandas</div>
+        <p>Interactive dashboard comparing nuclear and renewable energy trends across 314 countries, built on 23,000+ records spanning 1990 to 2025.</p>
+        <div class="links"><a href="https://github.com/durubirinci" target="_blank" rel="noopener">Source on GitHub</a></div></div>
+      <div class="item"><h3>Credit Card Fraud Detection</h3><div class="meta">2024 · Python, scikit-learn, Pandas, Matplotlib</div>
+        <p>Machine learning pipeline for detecting fraudulent transactions across 284,807 records. The Random Forest model achieved 96.3% ROC-AUC and 81.6% recall at 94% precision.</p>
+        <div class="links"><a href="https://github.com/durubirinci" target="_blank" rel="noopener">Source on GitHub</a></div></div>`
+  },
+  school: {
+    place: "Fantage School", title: "Skills & education",
+    html: `
+      <div class="item"><h3>New Jersey Institute of Technology</h3><div class="meta">B.S. Computer Science · AI/ML specialization · class of '27</div>
+        <p>Currently studying operating systems, networking, ML engineering and system design.</p></div>
+      <div class="item"><h3>Languages</h3><ul class="chips"><li>Python</li><li>Java</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>C# / .NET</li></ul></div>
+      <div class="item"><h3>Frameworks & tools</h3><ul class="chips"><li>React</li><li>React Native</li><li>Next.js</li><li>Tailwind CSS</li><li>HTML/CSS</li><li>Node.js</li><li>FastAPI</li><li>REST APIs</li></ul></div>
+      <div class="item"><h3>Data</h3><ul class="chips"><li>SQLite</li><li>PostgreSQL</li><li>Redis</li></ul></div>`
+  },
+  fiserv: {
+    place: "Uptown · Fiserv", title: "Fiserv",
+    html: `<div class="item"><h3>Software Engineer Intern</h3><div class="meta">May – Aug 2026</div><ul>
+      <li>Developed a Python log analysis tool for banking workstations, backed by a SQLite analysis layer for structured querying.</li>
+      <li>Built a C#/.NET desktop launcher that provides a single entry point to the tool.</li>
+      <li>Integrated an OpenAI-powered chatbot that lets users query log data in natural language.</li>
+      <li>Implemented a PII tokenization pipeline to safeguard sensitive data.</li></ul></div>`
+  },
+  njit: {
+    place: "Uptown · NJIT", title: "NJIT IST",
+    html: `<div class="item"><h3>Information Services & Technology Desk Attendant</h3><div class="meta">Sep 2025 – present</div><ul>
+      <li>Supervise and coordinate a team of eight student workers at the university IT service desk.</li>
+      <li>Resolve 70+ support tickets per week through ServiceNow.</li>
+      <li>Administer identity and access management with SailPoint and Duo multi-factor authentication.</li>
+      <li>Author and maintain knowledge base articles for common support issues.</li></ul></div>`
+  },
+  pseg: {
+    place: "Uptown · PSEG", title: "PSEG",
+    html: `<div class="item"><h3>Nuclear Information Technology Intern</h3><div class="meta">May – Aug 2025</div><ul>
+      <li>Developed a SQL-backed asset reporting system for nuclear IT operations.</li>
+      <li>Digitized operating procedures into SharePoint, replacing paper-based workflows.</li>
+      <li>Deployed plant kiosks and delivered a 3D scanning solution for equipment inspections.</li>
+      <li>Established a ServiceNow-powered support desk.</li></ul></div>`
+  },
+  about: {
+    place: "My Room", title: "About me",
+    html: `<p>I'm studying computer science at NJIT with a focus on AI and machine learning. My internships at PSEG and Fiserv taught me to build tools people use every day, from plant kiosks to log analysis for banking workstations.</p>
+           <p>Right now I am learning more about operating systems, networking, ML engineering and system design.</p>`
+  },
+  contact: {
+    place: "Mail", title: "Send me mail",
+    html: `<p>I'd love to hear about new grad roles, internships or collaborations.</p>
+      <form class="mailform" novalidate>
+        <label>Your name<input name="name" autocomplete="name" required maxlength="100"></label>
+        <label>Your email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+        <label>Subject<input name="subject" maxlength="150"></label>
+        <label>Your message<textarea name="message" rows="5" required maxlength="5000"></textarea></label>
+        <input type="checkbox" name="botcheck" class="trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Send mail!</button>
+        <p class="status" role="status"></p>
+      </form>
+      <div class="item"><h3>Or email me directly</h3><div class="links" style="align-items:center"><span class="email">${EMAIL}</span><button class="copy" type="button" data-copy>Copy</button></div></div>
+      <div class="links"><a href="https://github.com/durubirinci" target="_blank" rel="noopener">GitHub</a><a href="https://linkedin.com/in/duru-birinci" target="_blank" rel="noopener">LinkedIn</a></div>
+      <p class="todo">Resume download coming soon.</p>`
+  }
+};
+SECTIONS.work = {
+  place: "Uptown", title: "Experience",
+  html: ["fiserv", "njit", "pseg"].map(id => SECTIONS[id].html.replace("<h3>", `<h3>${SECTIONS[id].title} · `)).join("")
+};
+
+/* ---------- scenes ----------
+   Each scene is one cleaned-up Fantage screenshot. Spots are boxes over its buildings, in % of the stage:
+   [left, top, width, height]. "at" is where the avatar walks to (x %, bottom %) before the spot opens.
+   "floor" is the walkable band (bottom % range) for clicks on the ground. */
+const SCENES = {
+  downtown: { label: "Downtown", ratio: 900/461, floor: [3, 46], start: [30, 16], spots: [
+    { id: "intro",   label: "Welcome",          box: [0, 0, 21, 56],  at: [12, 40] },
+    { go: "school",  label: "Fantage School",   box: [44, 0, 25, 50], at: [56, 46] },
+    { go: "uptown",  label: "Uptown →",          box: [82, 0, 18, 54], at: [92, 38] }
+  ]},
+  uptown: { label: "Uptown", ratio: 728/416, floor: [2, 40], start: [16, 14], spots: [
+    { id: "fiserv",   label: "Fiserv",           box: [0, 0, 13, 52],  at: [8, 40] },
+    { id: "njit",     label: "NJIT",             box: [28, 0, 38, 55], at: [46, 40] },
+    { id: "projects", label: "Projects",         box: [67, 2, 14, 58], at: [74, 40] },
+    { id: "pseg",     label: "PSEG",             box: [82, 12, 18, 48], at: [91, 40] },
+    { go: "downtown", label: "← Downtown",       box: [0, 74, 14, 22], at: [5, 8] }
+  ]},
+  school: { label: "Fantage School", ratio: 720/400, floor: [3, 30], start: [20, 14], spots: [
+    { id: "school",   label: "Skills",           box: [46, 0, 38, 72], at: [62, 28] },
+    { go: "downtown", label: "← Downtown",       box: [0, 32, 10, 38], at: [5, 28] }
+  ]},
+  room: { label: "My Room", ratio: 747/427, floor: [3, 36], start: [22, 8], spots: [
+    { id: "about",    label: "About me",         box: [82, 0, 18, 92], at: [82, 18] },
+    { go: "downtown", label: "← Downtown",       box: [0, 30, 15, 64], at: [12, 6] }
+  ]}
+};
+/* where you arrive in a scene, by where you came from */
+const ARRIVE = { downtown: { uptown: [88, 34], school: [56, 40], room: [24, 24] }, uptown: { downtown: [16, 14] } };
+
+const stage = document.getElementById("stage");
+const avatar = document.getElementById("avatar");
+const bubble = document.getElementById("bubble");
+const zoneLabel = document.getElementById("zone-label");
+document.getElementById("toolbar").style.backgroundImage = `url(${IMG.toolbar})`;
+let current = null;
+
+function buildScene(name) {
+  const el = document.createElement("div");
+  el.className = "scene"; el.id = "scene-" + name; el.hidden = true;
+  for (const s of SCENES[name].spots) {
+    const b = document.createElement("button");
+    b.className = "spot"; b.type = "button";
+    const [l, t, w, h] = s.box;
+    Object.assign(b.style, { left: l + "%", top: t + "%", width: w + "%", height: h + "%" });
+    b.innerHTML = `<span class="sign">${s.label}</span>`;
+    b.setAttribute("aria-label", s.go ? `Go to ${SCENES[s.go].label}` : `${s.label}: ${SECTIONS[s.id].title}`);
+    b.addEventListener("click", e => { e.stopPropagation(); walkTo(s.at[0], s.at[1], () => s.go ? switchScene(s.go) : openPanel(s.id)); });
+    el.appendChild(b);
+  }
+  stage.insertBefore(el, avatar);
+}
+
+/* ---------- walking ---------- */
+let pos = { x: 50, y: 10 }, anim = null;
+function place() {
+  avatar.style.left = pos.x + "%"; avatar.style.bottom = pos.y + "%";
+  bubble.classList.toggle("l", pos.x < 18); bubble.classList.toggle("r", pos.x > 82);
+}
+function walkTo(x, y, done) {
+  bubble.hidden = true;
+  if (anim) cancelAnimationFrame(anim);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const from = { ...pos }, dx = x - from.x, dy = y - from.y;
+  const dist = Math.hypot(dx, dy * 1.6);
+  const ms = reduce ? 0 : Math.max(250, dist * 22);
+  if (Math.abs(dx) > 0.5) avatar.classList.toggle("right", dx > 0);
+  avatar.classList.add("walking");
+  const t0 = performance.now();
+  const tick = now => {
+    const k = ms ? Math.min(1, (now - t0) / ms) : 1;
+    pos = { x: from.x + dx * k, y: from.y + dy * k }; place();
+    if (k < 1) anim = requestAnimationFrame(tick);
+    else { anim = null; avatar.classList.remove("walking"); done && done(); }
+  };
+  anim = requestAnimationFrame(tick);
+}
+stage.addEventListener("click", e => {
+  const r = stage.getBoundingClientRect();
+  const [lo, hi] = SCENES[current].floor;
+  const x = Math.min(96, Math.max(4, (e.clientX - r.left) / r.width * 100));
+  const y = Math.min(hi, Math.max(lo, (r.bottom - e.clientY) / r.height * 100));
+  const ring = document.createElement("div");
+  ring.className = "click-ring"; ring.style.left = x + "%"; ring.style.bottom = y + "%";
+  stage.appendChild(ring); setTimeout(() => ring.remove(), 600);
+  walkTo(x, y);
+});
+const GREET = {
+  uptown: "Uptown is where I've worked, plus the Mission Center for my projects.",
+  school: "Fantage School: click it for my skills and education.",
+  room: "Welcome to my room! Check the fireplace to learn about me.",
+  downtown: "Back in Downtown."
+};
+function say(text) { bubble.textContent = text; bubble.hidden = false; }
+function switchScene(name, quiet) {
+  if (anim) { cancelAnimationFrame(anim); anim = null; avatar.classList.remove("walking"); }
+  const prev = current;
+  if (prev) document.getElementById("scene-" + prev).hidden = true;
+  document.getElementById("scene-" + name).hidden = false;
+  current = name;
+  const sc = SCENES[name];
+  stage.style.setProperty("--ratio", sc.ratio);
+  stage.style.backgroundImage = `url(${IMG[name]})`;
+  zoneLabel.textContent = sc.label;
+  const [x, y] = (ARRIVE[name] && ARRIVE[name][prev]) || sc.start;
+  pos = { x, y }; place();
+  if (!quiet) say(GREET[name]);
+}
+
+/* ---------- toolbar ---------- */
+const chat = document.getElementById("chat");
+function sendChat() {
+  const text = chat.value.trim();
+  if (text) say(text);
+  chat.value = ""; chat.blur();
+}
+chat.addEventListener("keydown", e => { if (e.key === "Enter") sendChat(); e.stopPropagation(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && overlay.hidden && document.activeElement === document.body) { e.preventDefault(); chat.focus(); }
+});
+document.getElementById("toolbar").addEventListener("click", e => {
+  const b = e.target.closest("[data-tb]");
+  if (!b) return;
+  const act = b.dataset.tb;
+  if (act === "home") { if (current !== "room") switchScene("room"); }
+  else if (act === "map") openMap();
+  else if (act === "closet") say("My closet is still empty. New outfits coming soon!");
+  else if (act === "send") sendChat();
+  else if (act === "buddies" || act === "mail") openPanel("contact");
+  else if (act === "settings") document.getElementById("plain").scrollIntoView({ behavior: "smooth" });
+});
+
+/* ---------- panel ---------- */
+const overlay = document.getElementById("overlay");
+const banner = document.getElementById("panel-banner");
+let lastFocus = null;
+function showPanel(eyebrow, title, html, img) {
+  document.getElementById("panel-title").textContent = title;
+  document.getElementById("panel-body").innerHTML = html;
+  banner.hidden = !img; if (img) banner.src = img;
+  lastFocus = document.activeElement;
+  overlay.hidden = false;
+  document.getElementById("close").focus();
+}
+function openPanel(id) { const s = SECTIONS[id]; showPanel(s.place, s.title, s.html, s.banner && IMG[s.banner]); }
+function openMap() {
+  const btns = Object.entries(SCENES).map(([k, s]) => `<button type="button" data-goto="${k}">${s.label}</button>`).join("");
+  showPanel("Map", "Where to?", `<div class="places">${btns}</div>`);
+}
+function closePanel() { overlay.hidden = true; lastFocus && lastFocus.focus && lastFocus.focus(); }
+document.getElementById("close").addEventListener("click", closePanel);
+overlay.addEventListener("click", e => {
+  if (e.target === overlay) return closePanel();
+  const g = e.target.closest("[data-goto]");
+  if (g) { closePanel(); if (g.dataset.goto !== current) switchScene(g.dataset.goto); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !overlay.hidden) closePanel(); });
+/* nav bar and shortcut buttons outside the game */
+document.addEventListener("click", e => {
+  const o = e.target.closest("[data-open]");
+  if (o) return openPanel(o.dataset.open);
+  const g = e.target.closest("[data-goto-scene]");
+  if (g) { if (g.dataset.gotoScene !== current) switchScene(g.dataset.gotoScene); stage.scrollIntoView({ behavior: "smooth", block: "center" }); }
+});
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-copy]");
+  if (!btn) return;
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy", 1500); };
+  try {
+    navigator.clipboard.writeText(EMAIL).then(done, () => selectEmail(btn));
+  } catch { selectEmail(btn); }
+});
+document.addEventListener("submit", async e => {
+  const form = e.target.closest(".mailform");
+  if (!form) return;
+  e.preventDefault();
+  const status = form.querySelector(".status"), btn = form.querySelector("button");
+  const f = Object.fromEntries(new FormData(form));
+  const show = (msg, cls) => { status.textContent = msg; status.className = "status " + cls; };
+  if (f.botcheck) return;
+  if (!f.name.trim() || !f.message.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email)) return show("Please fill in your name, a valid email and a message.", "err");
+  const subject = f.subject.trim() || `Portfolio message from ${f.name}`;
+  /* never navigate this page away: offer a mailto link in a new tab instead */
+  const openMailApp = (why) => {
+    const href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`${f.message}\n\n${f.name} <${f.email}>`)}`;
+    status.className = "status err";
+    status.innerHTML = `${why} <a href="${href}" target="_blank" rel="noopener">Send it from your email app</a> instead.`;
+  };
+  if (!WEB3FORMS_KEY) return openMailApp("The form isn't connected yet.");
+  btn.disabled = true; show("Sending…", "");
+  try {
+    const r = await fetch("https://api.web3forms.com/submit", {
+      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ access_key: WEB3FORMS_KEY, from_name: "Duru's Town", subject, name: f.name, email: f.email, message: f.message })
+    });
+    const j = await r.json();
+    if (!j.success) throw new Error(j.message);
+    form.reset(); show("Mail sent! I'll write back soon.", "ok");
+  } catch { openMailApp("Couldn't send it from here."); }
+  finally { btn.disabled = false; }
+});
+function selectEmail(btn) {
+  const span = btn.parentElement.querySelector(".email");
+  const range = document.createRange(); range.selectNodeContents(span);
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  btn.textContent = "Selected, press Ctrl+C";
+}
+
+for (const name of Object.keys(SCENES)) buildScene(name);
+for (const src of Object.values(IMG)) new Image().src = src;
+switchScene("downtown", true);
+</script>
