@@ -88,6 +88,22 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
 
 /* ---------- game window: scene + Fantage toolbar ---------- */
 .game { border: 6px solid var(--orange); outline: 3px solid var(--orange-dark); border-radius: 24px; overflow: hidden; box-shadow: 0 6px 0 var(--orange-dark), 0 14px 30px rgba(120,60,160,.25); background: var(--bar); }
+/* pop-up when the chat filter catches something, in the blue name-tag style */
+.warn {
+  position: absolute; left: 50%; top: 40%; z-index: 30; transform: translate(-50%, -50%);
+  font: 700 clamp(13px, 2.6cqw, 26px)/1.2 Arial, "Helvetica Neue", sans-serif; color: var(--red); white-space: nowrap;
+  --dot: radial-gradient(circle, #135a8b 45%, transparent 55%);
+  background:
+    var(--dot) top 5px left 5px / 6px 6px no-repeat, var(--dot) top 5px right 5px / 6px 6px no-repeat,
+    var(--dot) bottom 5px left 5px / 6px 6px no-repeat, var(--dot) bottom 5px right 5px / 6px 6px no-repeat,
+    linear-gradient(#b4e1ff, #8ecfff 60%, #84c6f6);
+  border: 3px solid #135a8b; border-radius: 12px; padding: 1.4cqw 3.2cqw;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.55), 0 4px 0 #3188c8, 0 10px 24px rgba(0,0,0,.25);
+  animation: warn-pop .25s ease-out; pointer-events: none;
+}
+.warn[hidden] { display: none; }
+@keyframes warn-pop { from { transform: translate(-50%, -50%) scale(.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .warn { animation: none; } }
 .stage {
   position: relative; width: 100%; aspect-ratio: var(--ratio, 1.75);
   background: #9fb0ae center / 100% 100% no-repeat;
@@ -296,6 +312,7 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
   <div class="game">
     <div class="stage" id="stage" aria-label="Clickable Fantage town. Each building opens a section of the portfolio.">
       <div class="zone-label" id="zone-label">Downtown</div>
+      <div class="warn" id="warn" role="alert" hidden>Please no profanity!</div>
       <div class="avatar" id="avatar">
         <div class="bubble" id="bubble">Hi, I'm Duru! Click a building, or use Home and Mail below.</div>
         <div class="sprite"><img src="assets/avatar.png" alt=""></div>
@@ -633,9 +650,22 @@ function filterChat(text) {
   return parts.map((t, i) => hide.has(i) ? "#".repeat([...t].length) : t).join("");
 }
 
+const warn = document.getElementById("warn");
+let warnTimer;
+function warnProfanity() {
+  clearTimeout(warnTimer);
+  warn.hidden = true; void warn.offsetWidth;  // restart the pop animation
+  warn.hidden = false;
+  warnTimer = setTimeout(() => { warn.hidden = true; }, 2500);
+}
+
 function sendChat() {
   const text = chat.value.trim();
-  if (text) say(filterChat(text));
+  if (text) {
+    const clean = filterChat(text);
+    say(clean);
+    if (clean !== text) warnProfanity();
+  }
   chat.value = ""; chat.blur();
 }
 chat.addEventListener("keydown", e => { if (e.key === "Enter") sendChat(); e.stopPropagation(); });
