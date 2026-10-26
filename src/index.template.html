@@ -587,20 +587,51 @@ const chat = document.getElementById("chat");
    The lists are ROT13-encoded so the page source stays clean. */
 const rot13 = s => s.replace(/[a-z]/g, c => String.fromCharCode((c.charCodeAt(0) - 84) % 26 + 97));
 const words = s => rot13(s).split(" ");
-const BLOCK_ANYWHERE = words("shpx fuvg phag avtt ovgpu juber fyhg snttbg zbgures nffubyr qhzonff wnpxnff ohyyfuvg jnax gjng ergneq chffl qvpxurnq");
+const BLOCK_ANYWHERE = words("shpx shx spx cuhpx cuhx fuvg phag avtt ovgpu ovngpu juber fyhg snttbg zbgures nffubyr qhzonff wnpxnff ohyyfuvg jnax gjng ergneq chffl qvpxurnq");
 const BLOCK_START = words("snt onfgneq obyybpx qbhpur fxnax gvgf obbo cravf intvan ubeal");
-const BLOCK_EXACT = new Set(words("nff nffrf nefr qnza penc cvff cvffrq phz ubr ubrf cbea frk frkl gvg anmv xlf qvpx qvpxf pbpx pbpxf cevpx cevpxf"));
-const LEET = { "0": "o", "1": "i", "!": "i", "|": "i", "3": "e", "4": "a", "@": "a", "5": "s", "$": "s", "7": "t", "+": "t", "8": "b", "9": "g" };
-function isBlocked(word) {
-  const plain = word.toLowerCase().replace(/[01!|34@57$+89]/g, c => LEET[c]).replace(/[^a-z]/g, "");
-  if (!plain) return false;
-  const squashed = plain.replace(/(.)\1+/g, "$1");  // "fuuuck" -> "fuck"
-  return [plain, squashed].some(w =>
-    BLOCK_EXACT.has(w) ||
-    BLOCK_START.some(b => w.startsWith(b)) ||
-    BLOCK_ANYWHERE.some(b => w.includes(b)));
+const BLOCK_EXACT = words("nff nffrf nefr qnza penc cvff cvffrq phz ubr ubrf cbea frk frkl gvg anmv xlf qvpx qvpxf pbpx pbpxf cevpx cevpxf");
+// Bypass tricks: leetspeak, look-alike letters from other alphabets, and symbols standing in for a letter.
+const LEET = { "0": "o", "1": "i", "!": "i", "|": "i", "3": "e", "4": "a", "@": "a", "5": "s", "$": "s", "7": "t", "+": "t", "8": "b", "9": "g", "(": "c", "<": "c" };
+const LOOKALIKE = { "а": "a", "е": "e", "ё": "e", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x", "і": "i", "ї": "i", "ѕ": "s", "ԁ": "d", "к": "k", "т": "t", "н": "h", "м": "m", "в": "b", "ь": "b", "г": "r", "ц": "u", "α": "a", "ο": "o", "ν": "v", "ι": "i", "κ": "k", "τ": "t", "υ": "u", "ρ": "p", "ε": "e", "ѵ": "v", "ɑ": "a", "ı": "i" };
+const WILD = /[*#?%_~^]/;  // a hidden letter, as in "f*ck"
+
+// Lowercase, strip accents and invisible characters, undo look-alikes and leetspeak.
+// Symbols inside a word become "." (any letter); everything else that isn't a letter is dropped.
+function normalize(word) {
+  let w = word.normalize("NFKD").replace(/[̀-ͯ​-‏⁠﻿]/g, "").toLowerCase();
+  w = [...w].map(c => LOOKALIKE[c] || LEET[c] || (WILD.test(c) ? "." : c)).join("");
+  return w.replace(/[^a-z.]/g, "").replace(/^\.+|\.+$/g, "");
 }
-const filterChat = text => text.split(/(\s+)/).map(t => /\S/.test(t) && isBlocked(t) ? "#".repeat(t.length) : t).join("");
+// Does `text` (which may hold "." wildcards) contain `bad` starting at index i?
+const matchAt = (text, bad, i) => [...bad].every((c, k) => text[i + k] === c || text[i + k] === ".");
+function isBlocked(word) {
+  const plain = normalize(word);
+  const letters = plain.replace(/\./g, "").length;
+  if (letters < 2 || letters < plain.length / 2) return false;
+  const squashed = plain.replace(/([a-z])\1+/g, "$1");  // "fuuuck" -> "fuck"
+  return [plain, squashed].some(w =>
+    BLOCK_EXACT.some(b => b.length === w.length && matchAt(w, b, 0)) ||
+    BLOCK_START.some(b => matchAt(w, b, 0)) ||
+    BLOCK_ANYWHERE.some(b => [...Array(Math.max(0, w.length - b.length + 1)).keys()].some(i => matchAt(w, b, i))));
+}
+// Checks each word, then runs of short pieces that spell a word out ("f u c k", "fu ck").
+function filterChat(text) {
+  const parts = text.split(/(\s+)/);
+  const idx = parts.map((t, i) => i).filter(i => /\S/.test(parts[i]));
+  const hide = new Set(idx.filter(i => isBlocked(parts[i])));
+  const short = i => normalize(parts[i]).length <= 2 && !hide.has(i);
+  for (let a = 0; a < idx.length; a++) {
+    if (!short(idx[a])) continue;
+    for (let b = a + 1; b < idx.length && short(idx[b]); b++) {
+      let run = idx.slice(a, b + 1);
+      const spells = r => isBlocked(r.map(i => parts[i]).join(""));
+      if (!spells(run)) continue;
+      while (run.length > 2 && spells(run.slice(1))) run = run.slice(1);  // keep "oh" in "oh s h i t"
+      run.forEach(i => hide.add(i));
+    }
+  }
+  return parts.map((t, i) => hide.has(i) ? "#".repeat([...t].length) : t).join("");
+}
 
 function sendChat() {
   const text = chat.value.trim();
