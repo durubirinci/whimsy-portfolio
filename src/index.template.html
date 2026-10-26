@@ -582,9 +582,29 @@ function switchScene(name, quiet) {
 
 /* ---------- toolbar ---------- */
 const chat = document.getElementById("chat");
+
+/* Fantage-style chat filter: blocked words become ####.
+   The lists are ROT13-encoded so the page source stays clean. */
+const rot13 = s => s.replace(/[a-z]/g, c => String.fromCharCode((c.charCodeAt(0) - 84) % 26 + 97));
+const words = s => rot13(s).split(" ");
+const BLOCK_ANYWHERE = words("shpx fuvg phag avtt ovgpu juber fyhg snttbg zbgures nffubyr qhzonff wnpxnff ohyyfuvg jnax gjng ergneq chffl qvpxurnq");
+const BLOCK_START = words("snt onfgneq obyybpx qbhpur fxnax gvgf obbo cravf intvan ubeal");
+const BLOCK_EXACT = new Set(words("nff nffrf nefr qnza penc cvff cvffrq phz ubr ubrf cbea frk frkl gvg anmv xlf qvpx qvpxf pbpx pbpxf cevpx cevpxf"));
+const LEET = { "0": "o", "1": "i", "!": "i", "|": "i", "3": "e", "4": "a", "@": "a", "5": "s", "$": "s", "7": "t", "+": "t", "8": "b", "9": "g" };
+function isBlocked(word) {
+  const plain = word.toLowerCase().replace(/[01!|34@57$+89]/g, c => LEET[c]).replace(/[^a-z]/g, "");
+  if (!plain) return false;
+  const squashed = plain.replace(/(.)\1+/g, "$1");  // "fuuuck" -> "fuck"
+  return [plain, squashed].some(w =>
+    BLOCK_EXACT.has(w) ||
+    BLOCK_START.some(b => w.startsWith(b)) ||
+    BLOCK_ANYWHERE.some(b => w.includes(b)));
+}
+const filterChat = text => text.split(/(\s+)/).map(t => /\S/.test(t) && isBlocked(t) ? "#".repeat(t.length) : t).join("");
+
 function sendChat() {
   const text = chat.value.trim();
-  if (text) say(text);
+  if (text) say(filterChat(text));
   chat.value = ""; chat.blur();
 }
 chat.addEventListener("keydown", e => { if (e.key === "Enter") sendChat(); e.stopPropagation(); });
