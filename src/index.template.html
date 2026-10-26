@@ -292,7 +292,9 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
 .cv-icons a { display: flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px solid var(--g200); border-radius: 6px; color: var(--g500); transition: color .15s, border-color .15s; }
 .cv-icons a:hover { color: var(--g950); border-color: var(--g300); }
 .cv-icons svg { width: 16px; height: 16px; }
-.photos { position: relative; width: 192px; height: 224px; flex: none; margin-right: 8px; cursor: pointer; border: 0; padding: 0; background: none; }
+.photos { position: relative; width: 192px; height: 224px; flex: none; margin-right: 8px; cursor: pointer; border: 0; padding: 0; background: none; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+.photos img[data-pos="2"] { cursor: grab; }
+.photos img[data-pos="2"]:active { cursor: grabbing; }
 .photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 6px solid #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 8px 20px rgba(0,0,0,.12); transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
 .photos img[data-pos="0"] { transform: translate(8px, 10px) rotate(-6deg); z-index: 1; }
 .photos img[data-pos="1"] { transform: translate(-8px, 5px) rotate(6deg); z-index: 2; }
@@ -412,7 +414,7 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
           <a href="mailto:db662@njit.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
         </div>
       </div>
-      <button class="photos" type="button" id="photos" aria-label="Show the next photo">
+      <button class="photos" type="button" id="photos" aria-label="Show the next photo (or swipe the photo)">
         <img src="assets/photo-pseg.webp" alt="Duru volunteering with PSEG" data-pos="0" loading="lazy">
         <img src="assets/photo-fiserv.webp" alt="Duru at her Fiserv internship" data-pos="1" loading="lazy">
         <img src="assets/photo-headshot.webp" alt="Duru Birinci" data-pos="2" loading="lazy">
@@ -785,9 +787,55 @@ document.querySelectorAll('.cv-tabs [role="tab"]').forEach(tab => tab.addEventLi
     document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
   });
 }));
-document.getElementById("photos").addEventListener("click", e => {
-  const imgs = [...e.currentTarget.querySelectorAll("img")];
-  imgs.forEach(img => img.dataset.pos = (Number(img.dataset.pos) + 1) % imgs.length);
+/* photo stack: swipe the front photo left or right to send it to the back (click or Enter works too) */
+const photos = document.getElementById("photos");
+const photoImgs = [...photos.querySelectorAll("img")];
+const SWIPE_PX = 90, SWIPE_SPEED = 0.5;  // px, px per ms
+let drag = null, justSwiped = false;
+function cyclePhotos() { photoImgs.forEach(img => img.dataset.pos = (Number(img.dataset.pos) + 1) % photoImgs.length); }
+function flyOut(img, dir) {
+  img.style.transition = "transform .25s ease-in, opacity .25s ease-in";
+  img.style.transform = `translateX(${dir * 600}px) rotate(${-2 + dir * 25}deg)`;
+  img.style.opacity = "0";
+  setTimeout(() => {
+    img.style.transition = "none";
+    cyclePhotos();
+    img.style.transform = ""; img.style.opacity = "0";
+    void img.offsetWidth;  // land at the back first, then fade in
+    img.style.transition = ""; img.style.opacity = "";
+  }, 250);
+}
+photoImgs.forEach(img => { img.draggable = false; });
+photos.addEventListener("pointerdown", e => {
+  const img = e.target.closest("img");
+  if (!img || img.dataset.pos !== String(photoImgs.length - 1)) return;
+  drag = { img, x: e.clientX, t: e.timeStamp, lastX: e.clientX, lastT: e.timeStamp, moved: false };
+  img.setPointerCapture(e.pointerId);
+  img.style.transition = "none";
+});
+photos.addEventListener("pointermove", e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x;
+  if (Math.abs(dx) > 4) drag.moved = true;
+  drag.vx = (e.clientX - drag.lastX) / Math.max(1, e.timeStamp - drag.lastT);
+  drag.lastX = e.clientX; drag.lastT = e.timeStamp;
+  drag.img.style.transform = `translateX(${dx}px) rotate(${-2 + dx / 10}deg)`;
+});
+function endDrag(e) {
+  if (!drag) return;
+  const { img, x, moved, vx = 0 } = drag;
+  const dx = e.clientX - x;
+  drag = null;
+  if (!moved) { img.style.transition = ""; img.style.transform = ""; return; }
+  justSwiped = true;
+  if (Math.abs(dx) > SWIPE_PX || Math.abs(vx) > SWIPE_SPEED) flyOut(img, (dx || vx) > 0 ? 1 : -1);
+  else { img.style.transition = ""; img.style.transform = ""; }  // spring back
+}
+photos.addEventListener("pointerup", endDrag);
+photos.addEventListener("pointercancel", endDrag);
+photos.addEventListener("click", () => {
+  if (justSwiped) { justSwiped = false; return; }
+  flyOut(photoImgs.find(img => img.dataset.pos === String(photoImgs.length - 1)), 1);
 });
 
 /* keep the "Skip the game" arrow under the Resume link when the sticker sits below the nav */
