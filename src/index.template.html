@@ -76,9 +76,13 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
 .sticker:hover span, .sticker:focus-visible span { transform: scale(1.07) rotate(2deg); }
 .sticker-arrow { width: 44px; height: 30px; fill: none; stroke: #c4520c; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 /* not enough room beside the nav: sit under it, pointing up */
+/* not enough room beside the nav: sit under it, with the arrow lined up under Resume (placed by placeSticker) */
 @media (max-width: 1200px) {
-  .sticker { position: static; transform: rotate(-4deg); justify-self: end; margin: 10px 0 -6px 0; }
-  .sticker-arrow { transform: rotate(-40deg) scaleX(-1); margin-top: -18px; }
+  .nav-wrap { padding-bottom: 74px; }
+  .sticker { left: var(--sx, auto); right: auto; top: var(--sy, auto); transform: none; }
+  .sticker span { transform: rotate(-4deg); }
+  .sticker:hover span, .sticker:focus-visible span { transform: scale(1.07) rotate(-2deg); }
+  .sticker-arrow { position: absolute; left: var(--ax, 30px); bottom: 100%; width: 34px; height: 24px; margin: 0 0 5px -17px; transform: rotate(90deg); }
 }
 .hero { text-align: center; display: grid; gap: 2px; }
 /* big bubbly title like "JOIN NOW!" */
@@ -682,6 +686,29 @@ function warnProfanity() {
   warn.hidden = false;
   warnTimer = setTimeout(() => { warn.hidden = true; }, 2500);
 }
+
+/* keep the "Skip the game" arrow under the Resume link when the sticker sits below the nav */
+const sticker = document.querySelector(".sticker");
+const resumeLink = document.querySelector('.nav a[href="#plain"]');
+const narrow = matchMedia("(max-width: 1200px)");
+function placeSticker() {
+  if (!narrow.matches) { ["--sx", "--sy", "--ax"].forEach(v => sticker.style.removeProperty(v)); return; }
+  const wrap = sticker.parentElement.getBoundingClientRect();
+  const nav = sticker.parentElement.querySelector(".nav").getBoundingClientRect();
+  const link = resumeLink.getBoundingClientRect();
+  const tipX = link.left + link.width / 2 - wrap.left;   // under the middle of "Resume"
+  const width = sticker.offsetWidth;
+  const minX = 8 - wrap.left, maxX = document.documentElement.clientWidth - 8 - wrap.left - width;
+  const x = Math.max(minX, Math.min(tipX - 30, maxX));
+  sticker.style.setProperty("--sx", x + "px");
+  sticker.style.setProperty("--sy", (nav.bottom - wrap.top + 34) + "px");
+  sticker.style.setProperty("--ax", (tipX - x) + "px");
+}
+placeSticker();
+addEventListener("resize", placeSticker);
+narrow.addEventListener("change", placeSticker);
+document.fonts && document.fonts.ready.then(placeSticker);
+new ResizeObserver(placeSticker).observe(resumeLink);
 
 function sendChat() {
   const text = chat.value.trim();
