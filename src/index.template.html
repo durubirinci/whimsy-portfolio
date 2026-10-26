@@ -305,7 +305,6 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
     <div class="toolbar" id="toolbar">
       <button class="tb" type="button" style="left:0.8%;width:6.2%" data-tb="home" title="My Room" aria-label="Home: go to my room"></button>
       <button class="tb" type="button" style="left:8.2%;width:6.4%" data-tb="map" title="Map" aria-label="Map: travel to another place"></button>
-      <button class="tb" type="button" style="left:15.6%;width:6.2%" data-tb="closet" title="Closet" aria-label="Closet"></button>
       <input class="chat" id="chat" type="text" maxlength="60" placeholder="Click Here Or Press ENTER To Chat" aria-label="Say something">
       <button class="tb" type="button" style="left:70.4%;width:6.4%" data-tb="send" title="Send" aria-label="Send chat"></button>
       <button class="tb" type="button" style="left:78.2%;width:6.2%" data-tb="buddies" title="Buddies" aria-label="Buddies: GitHub and LinkedIn"></button>
@@ -598,7 +597,6 @@ document.getElementById("toolbar").addEventListener("click", e => {
   const act = b.dataset.tb;
   if (act === "home") { if (current !== "room") switchScene("room"); }
   else if (act === "map") openMap();
-  else if (act === "closet") say("My closet is still empty. New outfits coming soon!");
   else if (act === "send") sendChat();
   else if (act === "buddies" || act === "mail") openPanel("contact");
   else if (act === "settings") document.getElementById("plain").scrollIntoView({ behavior: "smooth" });
