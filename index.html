@@ -97,10 +97,12 @@ body { font-family: var(--font-body); font-size: 16px; line-height: 1.55; }
     var(--dot) top 5px left 5px / 6px 6px no-repeat, var(--dot) top 5px right 5px / 6px 6px no-repeat,
     var(--dot) bottom 5px left 5px / 6px 6px no-repeat, var(--dot) bottom 5px right 5px / 6px 6px no-repeat,
     linear-gradient(#b4e1ff, #8ecfff 60%, #84c6f6);
-  border: 3px solid #135a8b; border-radius: 12px; padding: 1.4cqw 3.2cqw;
+  border: 3px solid #135a8b; border-radius: 12px; padding: 1.4cqw 3.2cqw; text-align: center;
   box-shadow: inset 0 0 0 3px rgba(255,255,255,.55), 0 4px 0 #3188c8, 0 10px 24px rgba(0,0,0,.25);
   animation: warn-pop .25s ease-out; pointer-events: none;
 }
+.warn strong { display: block; font-weight: 700; }
+.warn span { display: block; margin-top: .35em; font-size: .6em; font-weight: 700; color: #0c1f3a; }
 .warn[hidden] { display: none; }
 @keyframes warn-pop { from { transform: translate(-50%, -50%) scale(.6); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .warn { animation: none; } }
@@ -312,7 +314,7 @@ footer { color: #5b4a80; font-size: .85rem; text-align: center; }
   <div class="game">
     <div class="stage" id="stage" aria-label="Clickable Fantage town. Each building opens a section of the portfolio.">
       <div class="zone-label" id="zone-label">Downtown</div>
-      <div class="warn" id="warn" role="alert" hidden>Please no profanity!</div>
+      <div class="warn" id="warn" role="alert" hidden><strong>Please no profanity!</strong><span>Let's keep the town friendly for everyone.</span></div>
       <div class="avatar" id="avatar">
         <div class="bubble" id="bubble">Hi, I'm Duru! Click a building, or use Home and Mail below.</div>
         <div class="sprite"><img src="assets/avatar.png" alt=""></div>
